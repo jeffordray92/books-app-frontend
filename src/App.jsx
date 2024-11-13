@@ -1,15 +1,26 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import MainPage from './pages/Main/MainPage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
+import Header from './components/Header';
+import Login from './pages/Auth/login';
+import Register from './pages/Auth/register';
+import MainPage from './pages/Main/mainPage';
+import ClubMeetingsPage from './pages/Main/clubMeetings';
+import BookNotesPage from './pages/Main/bookNotes';
 
-function App() {
+const App = () => {
     return (
-        <div>
+        <Router>
+            <Header />
             <Routes>
-                <Route path="/" element={<MainPage />} />
+                <Route path="/" element={<PrivateRoute><MainPage /></PrivateRoute>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/meetings" element={<PrivateRoute><ClubMeetingsPage /></PrivateRoute>} />
+                <Route path="/notes" element={<PrivateRoute><BookNotesPage /></PrivateRoute>} />
             </Routes>
-        </div>
+        </Router>
     );
-}
+};
 
 export default App;

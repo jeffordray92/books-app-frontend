@@ -13,6 +13,15 @@ const SearchBooks = forwardRef(({ onSelectBook }, ref) => {
     const [loading, setLoading] = useState(false);
     const itemRefs = useRef([]);
 
+    useImperativeHandle(ref, () => ({
+        clearInput() {
+            setQuery('');
+            setSuggestions([]);
+            setActiveIndex(-1);
+            setShowSuggestions(false);
+        }
+    }));
+
     useEffect(() => {
         const fetchSuggestions = async () => {
             if (query.trim() === '') {
@@ -32,14 +41,6 @@ const SearchBooks = forwardRef(({ onSelectBook }, ref) => {
         };
         fetchSuggestions();
     }, [query]);
-
-    useImperativeHandle(ref, () => ({
-        clearInput() {
-            setQuery('');
-            setActiveIndex(-1);
-            setShowSuggestions(false);
-        }
-    }));
 
     const handleInputChange = (e) => {
         setQuery(e.target.value);
@@ -90,7 +91,6 @@ const SearchBooks = forwardRef(({ onSelectBook }, ref) => {
         if (scrollTop + clientHeight >= scrollHeight - 10 && nextPageUrl && !loading) {
             setLoading(true);
             try {
-
                 const url = new URL(nextPageUrl);
                 let relativePath = url.pathname + url.search;
 
@@ -109,7 +109,7 @@ const SearchBooks = forwardRef(({ onSelectBook }, ref) => {
     };
 
     return (
-        <div style={{ position: 'relative', maxWidth: '400px', margin: 'auto' }}>
+        <div style={{ width: '100%', position: 'relative' }}>
             <TextField
                 label="Search for a book"
                 variant="outlined"
